@@ -16,7 +16,16 @@ sudo find /home -name '*.mp[3,4]' -delete
 
 sudo ufw enable
 sudo ufw default allow outgoing
-sudo ufw default deny incoming 
+sudo ufw default deny incoming
 sudo ufw allow ssh
 
 
+# Audit Users
+
+awk -F':' '{ print $1}' /etc/passwd > real.txt
+while read p; do
+    check=`grep $p users.txt`
+    if [[ $check == "" ]]; then
+        echo $p
+    fi
+done < real.txt
